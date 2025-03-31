@@ -3,6 +3,7 @@
 #  mkdir vol_n8n
 # sudo chown -R 1000:1000 vol_n8n
 # sudo chmod -R 755 vol_n8n
+# Lưu ý biến phải đúng URL = https://...
 
 services:
   n8n:
@@ -11,6 +12,10 @@ services:
     restart: unless-stopped
     environment:
       - WEBHOOK_URL=${URL}
+      - N8N_SECURE_COOKIE=false
+      - GENERIC_TIMEZONE=Asia/Ho_Chi_Minh
+      - N8N_EDITOR_BASE_URL=${URL}
+      - N8N_DEFAULT_BINARY_DATA_MODE=filesystem
     ports:
       - "5678:5678"
     volumes:
