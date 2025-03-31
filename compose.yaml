@@ -1,0 +1,26 @@
+# --Code for Slack Portainer--
+# --Trước khi chạy file, vào trong console của docker và chạy 2 lệnh sau:
+#  mkdir vol_n8n
+# sudo chown -R 1000:1000 vol_n8n
+# sudo chmod -R 755 vol_n8n
+
+services:
+  n8n:
+    image: n8nio/n8n
+    container_name: n8n
+    restart: unless-stopped
+    environment:
+      - WEBHOOK_URL=${URL}
+    ports:
+      - "5678:5678"
+    volumes:
+      - /root/vol_n8n:/home/node/.n8n
+
+  cloudflared:
+    image: cloudflare/cloudflared
+    command: tunnel --no-autoupdate run
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+    restart: unless-stopped
+    depends_on:
+      - n8n
